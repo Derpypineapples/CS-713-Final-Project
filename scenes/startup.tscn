@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://badb2e5u82trt"]
+
+[ext_resource type="Script" uid="uid://ctvscyqchayw5" path="res://scripts/startup.gd" id="1_t87yh"]
+
+[node name="Startup" type="Node"]
+script = ExtResource("1_t87yh")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cthpemid2elng")
+spawn_path = NodePath("../Level")
+spawn_limit = 1
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
+layout_mode = 1
+offset_right = 1149.06
+offset_bottom = 644.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Host" type="Button" parent="UI/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="Connect" type="Button" parent="UI/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Find" type="Button" parent="UI/CenterContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Find Match"
+
+[node name="TextEdit" type="TextEdit" parent="UI"]
+layout_mode = 2
+offset_left = 453.0
+offset_top = 370.0
+offset_right = 699.0
+offset_bottom = 418.0
+text = "13.218.222.181"
+placeholder_text = "Enter Server IP..."
+
+[node name="LobbyPlaceholder" type="Node" parent="."]
+
+[connection signal="pressed" from="UI/CenterContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/CenterContainer/VBoxContainer/Connect" to="." method="_on_client_pressed"]
+[connection signal="pressed" from="UI/CenterContainer/VBoxContainer/Find" to="." method="_on_find_match_pressed"]

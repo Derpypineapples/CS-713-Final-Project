@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://cthpemid2elng"]
+
+[ext_resource type="Texture2D" uid="uid://k8800peqsuj0" path="res://assets/textures/2048x2048 Texel Density Texture 2.png" id="1_2q6dc"]
+[ext_resource type="Script" uid="uid://cbcw5lnasv44u" path="res://scripts/level.gd" id="1_w7c3h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wfyh"]
+albedo_texture = ExtResource("1_2q6dc")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sugp2"]
+material = SubResource("StandardMaterial3D_0wfyh")
+size = Vector2(20, 20)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_jyhfs"]
+data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
+
+[node name="Level" type="Node3D"]
+script = ExtResource("1_w7c3h")
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Terrain" type="Node3D" parent="Map"]
+
+[node name="Ground" type="MeshInstance3D" parent="Map/Terrain"]
+mesh = SubResource("PlaneMesh_sugp2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Terrain/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0250072, 0.0372124, -0.0175753)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Terrain/Ground/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_jyhfs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Map"]
+transform = Transform3D(0.197331, 0.834851, -0.513891, -0.312471, 0.55042, 0.774209, 0.929205, 0.00780043, 0.369482, 0, 5.50249, 0)
+shadow_enabled = true
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cyjvkobu7gtbq")
+spawn_path = NodePath("../Players")
+spawn_limit = 4

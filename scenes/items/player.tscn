@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3 uid="uid://cyjvkobu7gtbq"]
+
+[ext_resource type="Script" uid="uid://cq8i0gg7g372a" path="res://scripts/player.gd" id="1_y1jnu"]
+[ext_resource type="Script" uid="uid://c4exv2ci477kk" path="res://scripts/player_input.gd" id="2_4la3m"]
+[ext_resource type="Script" uid="uid://tyg86ms8vecw" path="res://scenes/items/weapon.gd" id="3_4la3m"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0dt13"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_0dt13"]
+properties/0/path = NodePath(".:player")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:transform")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:motion")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("PlayerModel:transform")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_trabw"]
+properties/0/path = NodePath("../CameraContainer:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("../CameraContainer/CameraRot:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:input_motion")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_trabw"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_y1jnu")
+
+[node name="CameraContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="CameraRot" type="Node3D" parent="CameraContainer"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraContainer/CameraRot"]
+fov = 90.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_0dt13")
+
+[node name="ServerSync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_0dt13")
+
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="." node_paths=PackedStringArray("camera_base", "camera_rot", "camera_3D")]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_trabw")
+script = ExtResource("2_4la3m")
+camera_base = NodePath("../CameraContainer")
+camera_rot = NodePath("../CameraContainer/CameraRot")
+camera_3D = NodePath("../CameraContainer/CameraRot/Camera3D")
+
+[node name="PlayerModel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerModel"]
+mesh = SubResource("CapsuleMesh_trabw")
+skeleton = NodePath("../..")
+
+[node name="Weapon" type="Node3D" parent="."]
+script = ExtResource("3_4la3m")
