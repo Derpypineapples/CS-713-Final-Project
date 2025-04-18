@@ -1,6 +1,6 @@
 extends Control
 
-var websocket_url = "wss://scgiwqwlv7.execute-api.us-east-1.amazonaws.com/production/"
+var websocket_url = "ADD WEBSOCKET URL HERE"
 
 var match_button_texture = preload("res://assets/textures/tile.jpg")
 
