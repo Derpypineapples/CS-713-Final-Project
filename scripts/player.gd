@@ -7,7 +7,7 @@ const DIRECTION_INTERPOLATE_SPEED = 1
 const MOTION_INTERPOLATE_SPEED = 10
 const ROTATION_INTERPOLATE_SPEED = 10
 
-var health = 100
+var health: int = 100
 
 var motion = Vector2()
 var root_motion = Transform3D()
@@ -22,6 +22,8 @@ var orientation = Transform3D()
 		$PlayerInput.set_multiplayer_authority(id)
 
 func _ready():
+	if multiplayer.get_unique_id() != player: $UI.hide() # Hide Other Player's UI
+	$UI/Health.text = str(health)
 	orientation = player_model.global_transform
 	orientation.origin = Vector3()
 	if not multiplayer.is_server():
@@ -33,19 +35,24 @@ func _physics_process(delta: float) -> void:
 
 @rpc("any_peer")
 func respawn():
-	print("Respawning %s" % player)
 	var pos := Vector2.from_angle(randf() * 2 * PI)
 	position = Vector3(pos.x * 5, 0, pos.y * 5)
 
 @rpc ("any_peer")
-func take_damage(damage: int):
-	if not is_multiplayer_authority():
-		return
-	health -= damage
+func take_damage(damage: int = 15):
+	if (health - damage) <= 0:
+		# Both Need to be Called Respecively For Some Reason
+		if is_multiplayer_authority(): respawn()
+		else: respawn.rpc()
+		health = 100
+	else:
+		health -= damage + ((randf() * 5) - 2.5)
+	print(health/100.0)
+	$UI/Health.text = str(health)
+	$UI/Health.add_theme_color_override("default_color", Color(1, health/100.0, health/100.0))
 
 func _apply_input(delta: float):
 	motion = motion.lerp(player_input.input_motion, MOTION_INTERPOLATE_SPEED * delta)
-	#print(motion)
 	
 	var camera_basis : Basis = player_input.get_camera_rotation_basis()
 	var camera_z := camera_basis.z

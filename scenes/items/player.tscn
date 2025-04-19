@@ -1,8 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyjvkobu7gtbq"]
+[gd_scene load_steps=12 format=3 uid="uid://cyjvkobu7gtbq"]
 
 [ext_resource type="Script" uid="uid://cq8i0gg7g372a" path="res://scripts/player.gd" id="1_y1jnu"]
 [ext_resource type="Script" uid="uid://c4exv2ci477kk" path="res://scripts/player_input.gd" id="2_4la3m"]
-[ext_resource type="Script" uid="uid://tyg86ms8vecw" path="res://scenes/items/weapon.gd" id="3_4la3m"]
+[ext_resource type="Script" uid="uid://tyg86ms8vecw" path="res://scripts/weapon.gd" id="3_4la3m"]
+[ext_resource type="Material" uid="uid://bawjmct1stp7b" path="res://assets/materials/weapon_mat.material" id="3_8bc5l"]
+[ext_resource type="Texture2D" uid="uid://v7p3owyi2gft" path="res://assets/textures/crosshair.png" id="4_n5m1w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n5m1w"]
+material = ExtResource("3_8bc5l")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_n5m1w"]
+material = ExtResource("3_8bc5l")
+radial_segments = 16
+rings = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0dt13"]
 
@@ -45,7 +55,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="CameraRot" type="Node3D" parent="CameraContainer"]
 
 [node name="Camera3D" type="Camera3D" parent="CameraContainer/CameraRot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00279987, -1.19209e-07, 0.00214052)
 fov = 90.0
+
+[node name="Weapon" type="Node3D" parent="CameraContainer/CameraRot"]
+script = ExtResource("3_4la3m")
+
+[node name="Body" type="MeshInstance3D" parent="CameraContainer/CameraRot/Weapon"]
+transform = Transform3D(0.163846, 0, 0, 0, 0.288223, 0, 0, 0, 0.956087, 0.672091, -0.334687, -0.196283)
+mesh = SubResource("BoxMesh_n5m1w")
+
+[node name="Barrel" type="MeshInstance3D" parent="CameraContainer/CameraRot/Weapon"]
+transform = Transform3D(0.100381, 0, 0, 0, -3.30642e-09, -0.100381, 0, -0.075642, 4.38781e-09, 0.672091, -0.279552, -0.687649)
+mesh = SubResource("CylinderMesh_n5m1w")
+
+[node name="Sight" type="MeshInstance3D" parent="CameraContainer/CameraRot/Weapon"]
+transform = Transform3D(0.0336781, 0, 0, 0, 0.130135, 0, 0, 0, 0.0603321, 0.672091, -0.233143, -0.611092)
+mesh = SubResource("BoxMesh_n5m1w")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -69,5 +95,45 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_trabw")
 skeleton = NodePath("../..")
 
-[node name="Weapon" type="Node3D" parent="."]
-script = ExtResource("3_4la3m")
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="Control" parent="UI/CenterContainer"]
+layout_mode = 2
+
+[node name="CrosshairSprite" type="Sprite2D" parent="UI/CenterContainer/Crosshair"]
+texture = ExtResource("4_n5m1w")
+
+[node name="Health" type="RichTextLabel" parent="UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = -215.0
+offset_right = 390.0
+offset_bottom = -21.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/normal_font_size = 60
+bbcode_enabled = true
+text = "Health"
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 2

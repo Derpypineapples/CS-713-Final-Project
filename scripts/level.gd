@@ -1,6 +1,6 @@
 extends Node3D
 
-const SPAWN_RANDOM := 5.0
+const SPAWN_RADIUS := 25.0
 
 const LOCAL_HOST_MODE = true
 
@@ -26,7 +26,7 @@ func add_player(id: int):
 	character.player = id
 	
 	var pos := Vector2.from_angle(randf() * 2 * PI)
-	character.position = Vector3(pos.x * SPAWN_RANDOM, 0, pos.y * SPAWN_RANDOM)
+	character.position = Vector3(pos.x * SPAWN_RADIUS, 0, pos.y * SPAWN_RADIUS)
 	character.name = str(id)
 	$Players.add_child(character, true)
 

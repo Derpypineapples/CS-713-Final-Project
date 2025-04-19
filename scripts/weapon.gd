@@ -2,8 +2,8 @@ extends Node3D
 
 var _has_fired = false
 
-@onready var player_input = $"../PlayerInput"
-@onready var camera: Camera3D = $"../CameraContainer/CameraRot/Camera3D"
+@onready var player_input = $"../../../PlayerInput"
+@onready var camera: Camera3D = $"../Camera3D"
 
 func _ready() -> void:
 	pass # Replace with function body.
@@ -27,6 +27,6 @@ func _fire_weapon():
 	if not intersection.is_empty():
 		print(intersection.collider.name)
 		if intersection.collider is Player:
-			intersection.collider.respawn.rpc()
+			intersection.collider.take_damage.rpc()
 	else:
 		print("Nothing")
