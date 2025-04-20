@@ -6,6 +6,7 @@ const SERVER_IP = "127.0.0.1"
 const gameplay_level = "res://scenes/level.tscn"
 const lobby_scene = "res://scenes/lobby.tscn"
 
+# Enable if Instance is Server Exclusively
 const IS_SERVER = false;
 
 func _ready() -> void:

@@ -2,7 +2,8 @@ extends Node3D
 
 const SPAWN_RADIUS := 25.0
 
-const LOCAL_HOST_MODE = true
+# Disable When Host is Not Playing Game
+const LOCAL_HOST_MODE = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
