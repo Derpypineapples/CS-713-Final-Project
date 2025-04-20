@@ -7,7 +7,7 @@ const gameplay_level = "res://scenes/level.tscn"
 const lobby_scene = "res://scenes/lobby.tscn"
 
 # Enable if Instance is Server Exclusively
-const IS_SERVER = false;
+const IS_SERVER = true;
 
 func _ready() -> void:
 	if IS_SERVER:
